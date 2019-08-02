@@ -1,0 +1,90 @@
+<div class="container AbmDiv">
+<div class="row">
+    <div class="form-group col-md-6">
+        <form [formGroup]='formBook'> 
+          <label for="title">Titulo: </label>
+        <input type="text" formControlName="title" name="title" class="form-control">
+        <div class="form-text text-danger" *ngIf="title.invalid && (title.dirty || title.touched)">
+          <small *ngIf="title.errors['required']">Debe ingresar el titulo del libro.</small>
+        </div>
+        <label for="author">Autor: </label>
+        <input type="text" formControlName="author" name="author" class="form-control">
+        <div class="form-text text-danger" *ngIf="author.invalid && (author.dirty || author.touched)">
+          <small *ngIf="author.errors['required']">Debe ingresar el autor del libro.</small>
+        </div>
+        </form>
+        <button class="btn btn-md btn-success savebutton" [disabled]="formBook.invalid" (click)="GuardarLibro()">Guardar</button>
+    </div>
+
+    <table class="table col-md-6" *ngIf="showTable">
+        <thead class="headtabla">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of tableData">
+            <th scope="row"></th>
+            <td>{{item.title}}</td>
+            <td>{{item.author}}</td>
+            <td>
+              <button class="btn btn-sm btn-warning"  data-toggle="modal" data-target="#updateModal" (click)="SaveAuxData(item.title,item.author)"><i class="far fa-edit"></i></button>
+              <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modalConfirm" style="margin-left: 5px;" (click)="SaveAuxData(item.title,'')"><i class="fas fa-trash-alt"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+</div>
+</div>
+
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modificar libro</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]='formModal'>
+          <label for="title">Titulo</label>
+          <input type="text" name="title" formControlName="titleModal" class="form-control" value="{{auxTitle}}">
+          <div class="form-text text-danger" *ngIf="titleModal.invalid && (titleModal.dirty || titleModal.touched)">
+            <small *ngIf="titleModal.errors['required']">No puede dejar este campo vacio.</small>
+          </div>
+          <label for="author">Author</label>
+          <input type="text" name="author" formControlName="authorModal" class="form-control" value="{{auxAuthor}}">
+          <div class="form-text text-danger" *ngIf="authorModal.invalid && (authorModal.dirty || authorModal.touched)">
+            <small *ngIf="authorModal.errors['required']">No puede dejar este campo vacio.</small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="UpdateBook(auxTitle)" [disabled]="formModal.invalid">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">¿Esta seguro que desea eliminar {{auxTitle}}?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="DeleteOne()">Si, eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>

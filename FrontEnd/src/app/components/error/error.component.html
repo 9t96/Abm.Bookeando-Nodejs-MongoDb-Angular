@@ -1,0 +1,8 @@
+
+<div class="container" style="margin-top: 20px;">
+    <div class="alert alert-danger" role="alert">
+        Epa epaa a donde estas queriendo ir, mostro?
+    </div>
+    <a [routerLink]="['/auth']" *ngIf="routerAuth">←Inicio</a>
+    <a [routerLink]="['/home']" *ngIf="routerHome">←Inicio</a>
+</div>
